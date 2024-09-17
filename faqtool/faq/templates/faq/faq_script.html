@@ -5,26 +5,26 @@
   <h1>FAQ Schema Script</h1>
    
   <pre> <code>
-    &lt;script type="application/ld+json" &gt;
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {% for question in questions %}
-        {
-          "@type": "Question",
-          "name": "{{ question.question }}",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "{{ question.answer }}"
+      &lt;script type="application/ld+json" &gt;
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {% for question in questions %}
+          {
+            "@type": "Question",
+            "name": "{{ question.question }}",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "{{ question.answer }}"
+            }
           }
-        }
-        {% if not forloop.last %},{% endif %}
-        {% endfor %}
-      ]
-    }
-    &lt;/script&gt;
-  </code> </pre>
+          {% if not forloop.last %},{% endif %}
+          {% endfor %}
+        ]
+      }
+      &lt;/script&gt;
+    </code></pre>
 </div>
 
 {% endblock %}
