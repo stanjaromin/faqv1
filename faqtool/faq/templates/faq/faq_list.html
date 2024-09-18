@@ -1,23 +1,52 @@
 {% extends 'base.html' %}
+
 {% block content %}
 <div class="container mt-4">
     <h1>FAQ List</h1>
     <a href="{% url 'create_question' %}" class="btn btn-primary mb-3">Add New Question</a>
-    <ul class="list-group">
-        {% for question in questions %}
-            <li class="list-group-item">
-                <strong>{{ question.question }}</strong>
-                <p>{{ question.answer }}</p>
-                <a href="{% url 'edit_question' question.id %}" class="btn btn-sm btn-warning">Edit</a>
-                <form action="{% url 'delete_question' question.id %}" method="get" class="d-inline-block">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                </form>
-            </li>
-        {% empty %}
+    <a href="{% url 'faq_script' %}" class="btn btn-info mb-3">View FAQ Schema Script</a>
+    <!-- FAQ Questions List -->
+    <ul class="list-group"> 
+    {% for question in questions %}
+    <!-- <div class="mb-3"> -->
+        <li class="list-group-item">
+            <h6>Question:</h6>
+            <p> {{ question.question }}</p>
+            <h6>Answer:</h6>
+            <p> {{ question.answer }}</p>
+            <a href="{% url 'edit_question' question.id %}" class="btn btn-warning">Edit</a>
+            <!-- Delete button triggers the modal -->
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ question.id }}">
+                Delete
+            </button>
+        </li>
+    <!-- </div> -->
+
+    <!-- Modal for delete confirmation -->
+    <div class="modal fade" id="deleteModal{{ question.id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ question.id }}" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel{{ question.id }}">Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete the question: <strong>{{ question.question }}</strong>?
+                </div>
+                <div class="modal-footer">
+                    <!-- Delete confirmation button triggers the form submission -->
+                    <form method="post" action="{% url 'delete_question' question.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                    </form>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
             <li class="list-group-item">No FAQs available.</li>
-        {% endfor %}
+    {% endfor %}
     </ul>
-    <a href="{% url 'faq_script' %}" class="btn btn-info mt-4">View FAQ Schema Script</a>
 </div>
 {% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h1>FAQ List</h1>
+    <a href="{% url 'create_question' %}" class="btn btn-primary mb-3">Add New Question</a>
+    <ul class="list-group">
+        {% for question in questions %}
+            <li class="list-group-item">
+                <strong>{{ question.question }}</strong>
+                <p>{{ question.answer }}</p>
+                <a href="{% url 'edit_question' question.id %}" class="btn btn-sm btn-warning">Edit</a>
+                <form action="{% url 'delete_question' question.id %}" method="get" class="d-inline-block">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                </form>
+            </li>
+        {% empty %}
+            <li class="list-group-item">No FAQs available.</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'faq_script' %}" class="btn btn-info mt-4">View FAQ Schema Script</a>
+</div>
+{% endblock %}

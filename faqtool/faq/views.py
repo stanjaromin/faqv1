@@ -25,15 +25,18 @@ def edit_question(request, id):
             return redirect('faq_list')
     else:
         form = QuestionForm(instance=question)
+    # return render(request, 'faq/faq_list.html', {'form': form, 'question': question})    
     return render(request, 'faq/question_form.html', {'form': form})
+    # return render(request, 'faq/edit_question.html', {'form': form, 'question': question})
 
 def delete_question(request, id):
     question = get_object_or_404(Question, id=id)
     if request.method == 'POST':
         question.delete()
         return redirect('faq_list')
-    return render(request, 'faq/confirm_delete.html', {'question': question})
-
+    #return render(request, 'faq/confirm_delete.html', {'question': question})
+    return render(request, 'faq/faq_list.html')
+    
 def faq_script(request):
     questions = Question.objects.all()
     return render(request, 'faq/faq_script.html', {'questions': questions})
